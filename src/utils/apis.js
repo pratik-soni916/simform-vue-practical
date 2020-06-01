@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import axios from "axios";
 
 const camelize = (input) =>
