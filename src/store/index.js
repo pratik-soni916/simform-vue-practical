@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { ACTIONS, MUTATIONS } from "./constants";
-import { getIngredients } from "utils/apis";
+import { getIngredients } from "@/utils/apis";
 
 Vue.use(Vuex);
 
@@ -27,7 +27,6 @@ export default new Vuex.Store({
   },
   actions: {
     [ACTIONS.SET_DATE]({ commit }, payload = {}) {
-      console.log(payload);
       commit(MUTATIONS.SET_DATE, payload);
     },
     [ACTIONS.SET_INGREDIENTS_LOADING]({ commit }, isLoading = true) {
@@ -41,8 +40,6 @@ export default new Vuex.Store({
 
       try {
         const data = await getIngredients();
-
-        console.log(data);
 
         dispatch(ACTIONS.SET_INGREDIENTS_DATA, data);
       } catch (error) {

@@ -1,102 +1,121 @@
 <template>
-  <v-card max-width="600" class="mx-auto">
-    <v-toolbar color="light-blue" dark>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+  <v-row justify="center">
+    <v-col cols="6" md="6">
+      <v-card max-width="600" class="mx-auto" scrollable>
+        <v-toolbar color="light-blue" dark>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>My files</v-toolbar-title>
+          <v-toolbar-title>Ingredients</v-toolbar-title>
 
-      <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-view-module</v-icon>
-      </v-btn>
-    </v-toolbar>
-
-    <v-list two-line subheader>
-      <v-subheader inset>Folders</v-subheader>
-
-      <v-list-item v-for="item in items" :key="item.title" @click="">
-        <v-list-item-avatar>
-          <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="item.title"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-list-item-action>
           <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
+            <v-icon>mdi-magnify</v-icon>
           </v-btn>
-        </v-list-item-action>
-      </v-list-item>
 
-      <v-divider inset></v-divider>
-
-      <v-subheader inset>Files</v-subheader>
-
-      <v-list-item v-for="item in items2" :key="item.title" @click="">
-        <v-list-item-avatar>
-          <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-text="item.title"></v-list-item-title>
-          <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
-        </v-list-item-content>
-
-        <v-list-item-action>
           <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-information</v-icon>
+            <v-icon>mdi-view-module</v-icon>
           </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-  </v-card>
+        </v-toolbar>
+
+        <v-list two-line subheader>
+          <v-list-item
+            v-for="item in ingredients"
+            :key="item.title"
+            @click="nothing"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+              <v-list-item-subtitle
+                v-text="'Use by: ' + item.useBy"
+              ></v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-list-item-action v-if="selectedItmes.indexOf(item.title) >= 0">
+              <v-btn icon>
+                <v-icon color="blue lighten-1" dense>mdi-check</v-icon>
+              </v-btn>
+            </v-list-item-action>
+            <v-list-item-action v-else @click="addItem(item)">
+              <v-btn icon>
+                <v-icon color="green lighten-1" dense>mdi-plus</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-col>
+    <v-col cols="6" md="6">
+      <v-card max-width="600" class="mx-auto">
+        <v-card-title>Selected ingredients</v-card-title>
+        <v-card-text>
+          <v-chip
+            v-for="item in selectedItmes"
+            :key="item"
+            class="ma-2"
+            close
+            color="teal"
+            text-color="white"
+            close-icon="mdi-close"
+            @click:close="removeItem(item)"
+            text="item"
+          >
+            {{ item }}
+          </v-chip>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="nothing"
+            :disabled="isSubmitDisabled"
+          >
+            Get Recipes!
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+import { ACTIONS } from "@/store/constants";
+
 export default {
   name: "ListIngredients",
+  mounted() {
+    this.fetchIngredientsList();
+  },
+  methods: {
+    removeItem(item) {
+      const mySet = new Set([...this.selectedItmes.map((i) => i)]);
+      mySet.delete(item);
+      this.selectedItmes = [...mySet];
+    },
+    addItem(item) {
+      const mySet = new Set([...this.selectedItmes.map((i) => i)]);
+      mySet.add(item.title);
+      this.selectedItmes = [...mySet];
+    },
+    nothing() {},
+    ...mapActions({
+      fetchIngredientsList: ACTIONS.FETCH_INGREDIENTS_DATA,
+    }),
+  },
+  computed: mapState({
+    ingredients: ({ ingredients: { data = [] } = {}, date }) => {
+      return data.filter(
+        ({ useBy }) => new Date(useBy).getTime() >= new Date(date).getTime(),
+      );
+    },
+    isLoading: ({ ingredients: { isLoading = false } = {} }) => isLoading,
+    isSubmitDisabled() {
+      return this.selectedItmes.length === 0;
+    },
+  }),
   data: () => ({
-    items: [
-      {
-        icon: "folder",
-        iconClass: "grey lighten-1 white--text",
-        title: "Photos",
-        subtitle: "Jan 9, 2014",
-      },
-      {
-        icon: "folder",
-        iconClass: "grey lighten-1 white--text",
-        title: "Recipes",
-        subtitle: "Jan 17, 2014",
-      },
-      {
-        icon: "folder",
-        iconClass: "grey lighten-1 white--text",
-        title: "Work",
-        subtitle: "Jan 28, 2014",
-      },
-    ],
-    items2: [
-      {
-        icon: "assignment",
-        iconClass: "blue white--text",
-        title: "Vacation itinerary",
-        subtitle: "Jan 20, 2014",
-      },
-      {
-        icon: "call_to_action",
-        iconClass: "amber white--text",
-        title: "Kitchen remodel",
-        subtitle: "Jan 10, 2014",
-      },
-    ],
+    selectedItmes: [],
   }),
 };
 </script>

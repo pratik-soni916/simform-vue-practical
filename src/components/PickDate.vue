@@ -16,7 +16,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="setDate">Go!</v-btn>
+            <v-btn color="green darken-1" text @click="goNext">Go!</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -26,23 +26,18 @@
 
 <script>
 import { mapActions } from "vuex";
-import { ACTIONS } from "store/constants";
-
-console.log(ACTIONS.FETCH_INGREDIENTS_DATA);
+import { ACTIONS } from "@/store/constants";
 
 export default {
   name: "PickDate",
-  //   mounted() {
-  //     this.fetchIngredientsList();
-  //   },
   methods: {
-    setDate() {
+    goNext() {
       const { picker: date } = this;
-      this.goNext({ date });
+      this.setDate({ date });
+      this.$router.history.push("/ingredients");
     },
     ...mapActions({
-      goNext: ACTIONS.SET_DATE,
-      //   fetchIngredientsList: ACTIONS.FETCH_INGREDIENTS_DATA,
+      setDate: ACTIONS.SET_DATE,
     }),
   },
   data: () => ({

@@ -30,32 +30,31 @@
     </v-app-bar>
 
     <v-content>
-      <PickDate v-if="date === null" />
-      <HelloWorld v-else />
+      <router-link to="/">Home</router-link> |
+      <router-link to="/ingredients">Ingredients</router-link>
+      <!-- <PickDate v-if="date === null" />
+      <HelloWorld v-else /> -->
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import HelloWorld from "./components/HelloWorld";
-import PickDate from "./components/PickDate";
 
 export default {
   name: "App",
 
-  created: function() {
-    console.log("created", this.$store);
-    console.log("created", this.date);
-  },
+  updated: function() {
+    const { history } = this.$router;
 
-  components: {
-    HelloWorld,
-    PickDate
+    if (history.current.path !== "/" && this.date === null) {
+      history.push("/");
+    }
   },
 
   computed: mapState(["date"]),
 
-  data: () => ({})
+  data: () => ({}),
 };
 </script>
