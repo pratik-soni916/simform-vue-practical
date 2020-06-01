@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import axios from "axios";
 
 const camelize = (input) =>
@@ -26,11 +27,20 @@ axios.defaults.baseURL = API_END_POINT;
 export const getIngredients = () => {
   return axios
     .get("/ingredients")
-    .then(
-      ({ data }) => data,
-      // [...data].sort(
-      //   ({ [`useBy`]: aUseBy }, { [`useBy`]: bUseBy }) => aUseBy - bUseBy,
-      // ),
+    .then(({ data }) =>
+      [...data].sort(
+        ({ useBy: aUseBy }, { useBy: bUseBy }) =>
+          parseFloat(aUseBy.replace("-", "")) -
+          parseInt(bUseBy.replace("-", "")),
+      ),
     )
+    .catch((err) => err);
+};
+
+export const getRecipes = (ingredients = []) => {
+  const getParameter = `ingredients=${ingredients.join(",")}`;
+  return axios
+    .get(`/recipes?${getParameter}`)
+    .then(({ data }) => data)
     .catch((err) => err);
 };

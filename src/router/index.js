@@ -13,12 +13,25 @@ const routes = [
   {
     path: "/ingredients",
     name: "Ingredients",
+    children: [
+      // UserHome will be rendered inside User's <router-view>
+      // when /user/:id is matched
+      {
+        path: "/recipes",
+        component: () =>
+          import(
+            /* webpackChunkName: "list-recipes" */ "@/components/ListRecipes.vue"
+          ),
+      },
+
+      // ...other sub routes
+    ],
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (list-ingredients.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(
-        /* webpackChunkName: "about" */ "@/components/ListIngredients.vue"
+        /* webpackChunkName: "list-ingredients" */ "@/components/ListIngredients.vue"
       ),
   },
 ];

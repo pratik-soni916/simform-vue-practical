@@ -1,6 +1,7 @@
 export const MUTATIONS = ((prefix = "MUTATIONS") => ({
   SET_DATE: `${prefix}_SET_DATE`,
   SET_INGREDIENTS: `${prefix}_SET_INGREDIENTS`,
+  SET_RECIPES: `${prefix}_SET_RECIPES`,
 }))();
 
 export const ACTIONS = ((prefix = "ACTIONS") => ({
@@ -8,6 +9,10 @@ export const ACTIONS = ((prefix = "ACTIONS") => ({
   SET_INGREDIENTS_LOADING: `${prefix}_SET_INGREDIENTS_LOADING`,
   SET_INGREDIENTS_DATA: `${prefix}_SET_INGREDIENTS_DATA`,
   FETCH_INGREDIENTS_DATA: `${prefix}_FETCH_INGREDIENTS_DATA`,
+  SET_RECIPES_LOADING: `${prefix}_SET_RECIPES_LOADING`,
+  SET_RECIPES_MODAL: `${prefix}_SET_RECIPES_MODAL`,
+  SET_RECIPES_DATA: `${prefix}_SET_RECIPES_DATA`,
+  FETCH_RECIPES_DATA: `${prefix}_FETCH_RECIPES_DATA`,
 }))();
 
 export default {
