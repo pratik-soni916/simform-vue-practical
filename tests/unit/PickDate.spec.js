@@ -2,10 +2,8 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vue from "vue";
 import Vuetify from "vuetify";
-// import { cloneDeep } from "lodash";
 
 import PickDate from "@/components/PickDate.vue";
-import store from "@/store";
 
 const localVue = createLocalVue();
 
