@@ -4,19 +4,9 @@
       <v-col cols="6" md="6">
         <v-card max-width="600" class="mx-auto" scrollable>
           <v-toolbar color="light-blue" dark>
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
             <v-toolbar-title>Ingredients</v-toolbar-title>
 
             <v-spacer></v-spacer>
-
-            <v-btn icon>
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
-            <v-btn icon>
-              <v-icon>mdi-view-module</v-icon>
-            </v-btn>
           </v-toolbar>
 
           <v-list two-line subheader>

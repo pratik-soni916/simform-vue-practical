@@ -1,12 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import PickDate from "@/components/PickDate.vue";
 
-describe("HelloWorld.vue", () => {
+describe("PickDate.vue", () => {
   it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg },
-    });
+    const msg = "Select a preffered lunch date";
+    const wrapper = shallowMount(PickDate, {});
     expect(wrapper.text()).toMatch(msg);
   });
 });
